@@ -26,7 +26,7 @@ public class Settings : MonoBehaviour
 		// the value of Application.targetFrameRate will be ignored.
 		QualitySettings.vSyncCount = 0;
 		// 0 is Don't Sync.
-		QualitySettings.vSyncCount = 1;		// Will have one frame for 1 sync.
+		//QualitySettings.vSyncCount = 1;		// Will have one frame for 1 sync.
 		
 		// 4 is the higher quality.
 		// It will make 4 frames per sync.

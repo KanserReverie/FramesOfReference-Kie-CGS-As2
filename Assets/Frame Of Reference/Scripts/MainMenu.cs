@@ -59,9 +59,9 @@ public class MainMenu : MonoBehaviour
 		// If the position and rotation are close enough to the desination and at the correct angle.
 		if(Vector3.Distance(cam.transform.position, lerpTo.position) < Time.deltaTime * 5 && Quaternion.Angle(cam.transform.rotation, lerpTo.rotation) < 1f)
 		{
-			// We are running this just to make sure the parent has made it to the final destination.
-			// In all honesty you should know if it has by if it becomes a child of the new target object.
-			Debug.Log("Hit end destination and will now parent to - " + lerpTo.name);
+				// We are running this just to make sure the parent has made it to the final destination.
+				// In all honesty you should know if it has by if it becomes a child of the new target object.
+				// Debug.Log("Hit end destination and will now parent to - " + lerpTo.name);
 			// Make the position = the target position.
 			cam.transform.position = lerpTo.transform.position;
 			// Make the rotation = the target rotation.
@@ -86,8 +86,8 @@ public class MainMenu : MonoBehaviour
 			// If the Raycast hits an object.
 			if(Physics.Raycast(ray, out hit))
 			{
-				// This will print the tag of the object.
-				Debug.Log(hit.transform.tag);
+					// This will print the tag of the object.
+					// Debug.Log(hit.transform.tag);
 				// This goes through the children of the said gameObject and finds the one which has the "CameraTarget" on it.
 				CameraTarget hitCam = hit.transform.GetComponentInChildren<CameraTarget>();
 				// If it does get a target.
