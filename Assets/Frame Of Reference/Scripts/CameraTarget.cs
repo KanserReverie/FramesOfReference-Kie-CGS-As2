@@ -2,17 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> This is just used as a target to send the camera to. </summary>
 public class CameraTarget : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// This is only really used as a tag so no code really needed.
 }

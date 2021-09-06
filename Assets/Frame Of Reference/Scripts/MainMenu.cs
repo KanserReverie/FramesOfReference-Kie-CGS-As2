@@ -2,48 +2,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class ObjectClicker : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
 	/// <summary> This is the camera this will be moving.</summary>
 	private Camera cam;
 
 	/// <summary> This is the new transform that the player will lerp to.</summary>
 	public Transform lerpTo;
-
+	
 	/// <summary> The speed the player will jump between people at. </summary>
-	[SerializeField] private float jumpMovingSpeed = 5;
+	[SerializeField] private float jumpMovingSpeed = 5f;
 	
 	/// <summary> The speed the player will rotate during jumps between people. </summary>
-	[SerializeField] private float jumpRotationSpeed = 3;
-
+	[SerializeField] private float jumpRotationSpeed = 3f;
+	
+	/// <summary> When player will start jumping between people during the menu scene. </summary>
+	[SerializeField] private float jumpStartTime = 0f;
+	
+	/// <summary> The time between player will start jumping between people in the menu scene. </summary>
+	[SerializeField] private float jumpRepeatTime = 5f;
+	
 	/// <summary>This will get all the components in the hierarchy. </summary>
 	private void Awake()
 	{
 		cam = GetComponent<Camera>();
 	}
 
+	/// <summary> When the game starts invoke the repeating. </summary>
+	private void Start()
+	{
+		// Shoots a ray from the middle of the screen.
+		InvokeRepeating("RayCastClick", jumpStartTime, jumpRepeatTime);
+	}
+
 	/// <summary> Mainly called to get the clicker or relaad the scene. </summary>
 	private void Update()
 	{
-		// Checks the clicker.
-		RayCastClicker();
-		
-		// If there is a desination for the player to move to.
+		// If it is meant to be moving to a target, lerp to it
 		if(lerpTo != null)
 		{
 			MoveToTarget();
 		}
-		
-		// Reloads the scene if R pressed.
-		if(Input.GetKeyDown(KeyCode.R))
-		{
-			ReloadScene();
-		}
 	}
 
+	/// <summary> This will lerp the camera to the target.</summary>
 	private void MoveToTarget()
 	{
 		// This will lerp the Cam Position (Vector3) to the new position at deltaTime * jumpMovingSpeed.
@@ -69,37 +73,19 @@ public class ObjectClicker : MonoBehaviour
 		}
 	}
 
-	/// <summary> Reloads the current scene. </summary>
-	private void ReloadScene()
-	{
-		// Gets the current Scene Number.
-		Scene scene = SceneManager.GetActiveScene();
-		// Reloads this scene.
-		SceneManager.LoadScene(scene.name);
-	}
-
 	/// <summary> This is used to check if something is clicked to move to it or go to the next level. </summary>
-	private void RayCastClicker()
+	private void RayCastClick()
 	{
-		// Make a Ray for where the mouse is.
-		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-		// Draw this ray in scene to a maximum of 100m.
-		Debug.DrawRay(ray.origin, ray.direction * 100f,Color.magenta);
-		// When the Main Click is pressed down
-		if(Input.GetMouseButtonDown(0))
+		// This is a simple null check, thanks Rider.
+		if(Camera.main is { })
 		{
+			// This gets a Ray from the middle of the screen.
+			Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
 			// Makes a RaycastHit.
 			RaycastHit hit;
 			// If the Raycast hits an object.
 			if(Physics.Raycast(ray, out hit))
 			{
-				// If the player clicks on an object named finish.
-				if(hit.transform.CompareTag("Finish"))
-				{
-					// This will either go to the next level or main menu if it is the last level.
-					NextLevel();
-				}
-				
 				// This will print the tag of the object.
 				Debug.Log(hit.transform.tag);
 				// This goes through the children of the said gameObject and finds the one which has the "CameraTarget" on it.
@@ -114,27 +100,6 @@ public class ObjectClicker : MonoBehaviour
 					transform.parent = null;
 				}
 			}
-		}
-	}
-
-	/// <summary> Goto the next level OR the main menu if it is the last level. </summary>
-	private void NextLevel()
-	{
-		// Gets the current scene number and adds 1 for the next level.
-		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-		
-		// If there is a next level.
-		if (SceneManager.sceneCountInBuildSettings > nextSceneIndex)
-		// Yes I know this can be a Turnary Operator but it makes it harder to read, so I am not doing it.
-		{
-			// Open the next level.
-			SceneManager.LoadScene(nextSceneIndex);
-		}
-		// If there is no more levels.
-		else
-		{
-			// Returns to the first scene or main menu.
-			SceneManager.LoadScene(0);
 		}
 	}
 }
