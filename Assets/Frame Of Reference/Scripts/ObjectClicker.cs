@@ -53,10 +53,13 @@ public class ObjectClicker : MonoBehaviour
 			
 			if(Physics.Raycast(ray, out hit))
 			{
+				Debug.Log(hit.transform.tag);
+				
 				if(hit.transform.CompareTag("Finish"))
 				{
 					NextLevel();
 				}
+				
 				CameraTarget hitCam = hit.transform.GetComponentInChildren<CameraTarget>();
 				if(hitCam != null)
 				{
