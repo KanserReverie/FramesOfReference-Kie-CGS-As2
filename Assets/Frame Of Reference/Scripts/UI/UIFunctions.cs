@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,17 +19,17 @@ namespace UI.Basic
         }
         public void RetryButton()
         {
-            Time.timeScale = 1; 
+            Time.timeScale = 1;
             Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
         public void QuitButton()
         {
             Time.timeScale = 1;
-        
+
             Application.Quit();
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#endif
         }
     }
 }
